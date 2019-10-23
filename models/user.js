@@ -29,16 +29,18 @@ const userSchema = new mongoose.Schema({
   isArtist: {
     type: Boolean
   },
-  follower: {
-    friend_id: {
-      type: ObjectId
+  follower: [
+    {
+      type: ObjectId,
+      ref: "User"
     }
-  },
-  following: {
-    friend_id: {
-      type: ObjectId
+  ],
+  following: [
+    {
+      type: ObjectId,
+      ref: "User"
     }
-  },
+  ],
 
   story: {
     story_url: {

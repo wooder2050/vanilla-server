@@ -8,6 +8,7 @@ const user = require("../models/user");
 const post = require("../models/post");
 const album = require("../models/album");
 const asset = require("../models/asset");
+const usersController = require("./controllers/users.controller");
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -28,6 +29,8 @@ const upload = multer({
     acl: "public-read-write"
   })
 });
+
+router.post("/follow", usersController.followUpdate);
 
 router.get("/:assetId", async function(req, res) {
   const selectAsset = await asset.find({
@@ -117,12 +120,11 @@ router.post("/databasepost", async function(req, res, next) {
   });
 });
 router.post("/posting", async function(req, res, next) {
-  console.log("/posting  ", req.body);
   const asset_urls = await asset.find({
     _id: req.body.assetId
   });
-  console.log("asset_urls ",asset_urls[0]);
   await post.create({
+    poster_id: req.body._id,
     email: req.body.email,
     user_display_name: req.body.user_display_name,
     profile_url: req.body.profile_url,

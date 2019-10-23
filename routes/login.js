@@ -15,14 +15,12 @@ module.exports = function(passport) {
   router.post(
     "/",
     passport.authenticate("local", {
-      successRedirect: "http://localhost:3000",
+      successRedirect: "http://localhost:3000/mypage",
       failureRedirect: "http://localhost:3000/login"
     })
   );
 
   router.get("/success", async function(req, res, next) {
-    console.log("end point success");
-    console.log(req.user);
     if (req.user) {
       const user_info = await user.find({
         email: req.user.email
@@ -58,7 +56,7 @@ module.exports = function(passport) {
   router.get(
     "/google/callback",
     passport.authenticate("google", {
-      successRedirect: "http://localhost:3000",
+      successRedirect: "http://localhost:3000/mypage",
       failureRedirect: "http://localhost:3000/login"
     })
   );

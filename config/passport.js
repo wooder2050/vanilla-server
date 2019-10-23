@@ -11,12 +11,10 @@ module.exports = function(app) {
   app.use(passport.session());
 
   passport.serializeUser(function(user, done) {
-    console.log("serializeUser", user);
     done(null, user);
   });
 
   passport.deserializeUser(async function(user, done) {
-    console.log("deserializeUser ", user);
     User.findById(user._id, function(err, user) {
       done(err, user);
     });
@@ -29,7 +27,6 @@ module.exports = function(app) {
         passwordField: "password"
       },
       async function(email, password, done) {
-        console.log("LocalStrategy ",email, password);
         const loginUser = await User.findOne({
           email: email
         });
@@ -58,7 +55,6 @@ module.exports = function(app) {
       async function(accessToken, refreshToken, profile, done) {
         var email = profile.emails[0].value;
         var name = profile.displayName;
-        console.log("passport ", email);
         var loginUser = await User.findOne({
           email: email
         });
