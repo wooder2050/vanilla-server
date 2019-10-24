@@ -70,15 +70,22 @@ router.get("/followingusers", async function(req, res) {
     });
 
     const followingArray = loginUser[0].following;
+    const followedArray = loginUser[0].follower;
 
     const followingUsers = await Promise.all(
       followingArray.map(async id => {
         return await user.findById(id);
       })
     );
+    const followedUsers = await Promise.all(
+      followedArray.map(async id => {
+        return await user.findById(id);
+      })
+    );
     return res.status(200).json({
       message: "following user info successfully onload",
-      followingUsers: followingUsers
+      followingUsers: followingUsers,
+      followedUsers: followedUsers
     });
   }
 });

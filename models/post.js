@@ -26,6 +26,12 @@ const postSchema = new mongoose.Schema({
   post_date: {
     type: Date
   },
+  singer: {
+    type: String
+  },
+  title: {
+    type: String
+  },
   lyrics: {
     type: String
   },

@@ -12,28 +12,42 @@ exports.followUpdate = async function(req, res, next) {
   const followee = await user.find({
     _id: req.body.followed
   });
-
-  follower[0].following.push(followee[0]._id);
-  followee[0].follower.push(follower[0]._id);
-  const updatedfollower = await user.update(
-    { _id: req.body.following },
-    {
-      following: follower[0].following
+  var followingState = false;
+  for (var i = 0; i < followee[0].follower.length; i++) {
+    if (followee[0].follower[i] === follower[0]._id) {
+      followingState = true;
     }
-  );
-  const updatedfollowee = await user.update(
-    { _id: req.body.followed },
-    {
-      follower: followee[0].follower
-    }
-  );
+  }
+  if (followingState) {
+    return res.status(401).json({
+      followUpdate: false,
+      message: "user following failed",
+      follower: follower[0],
+      followee: followee[0]
+    });
+  } else {
+    follower[0].following.push(followee[0]._id);
+    followee[0].follower.push(follower[0]._id);
+    const updatedfollower = await user.update(
+      { _id: req.body.following },
+      {
+        following: follower[0].following
+      }
+    );
+    const updatedfollowee = await user.update(
+      { _id: req.body.followed },
+      {
+        follower: followee[0].follower
+      }
+    );
 
-  return res.status(200).json({
-    followUpdate: true,
-    message: "user following successfully updated",
-    follower: updatedfollower[0],
-    followee: updatedfollowee[0]
-  });
+    return res.status(200).json({
+      followUpdate: true,
+      message: "user following successfully updated",
+      follower: updatedfollower[0],
+      followee: updatedfollowee[0]
+    });
+  }
 };
 
 exports.create = async function(req, res, next) {
