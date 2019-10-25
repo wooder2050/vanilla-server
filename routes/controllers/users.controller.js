@@ -1,15 +1,100 @@
-const user = require("../../models/user");
+const User = require("../../models/user");
+const Post = require("../../models/post");
 const bcrypt = require("bcrypt");
 
-exports.getAll = async function(req, res, next) {
-  res.redirect("/register");
+exports.getFollowingUsers = async function(req, res, next) {
+  if (req.user) {
+    const loginUser = await User.find({
+      email: req.user.email
+    });
+
+    const followingArray = loginUser[0].following;
+    const followedArray = loginUser[0].follower;
+
+    const followingUsers = await Promise.all(
+      followingArray.map(async id => {
+        return await User.findById(id);
+      })
+    );
+    const followedUsers = await Promise.all(
+      followedArray.map(async id => {
+        return await User.findById(id);
+      })
+    );
+    return res.status(200).json({
+      message: "successfully following",
+      followingUsers: followingUsers,
+      followedUsers: followedUsers
+    });
+  }
 };
+
+exports.postUserUpdate = async function(req, res, next) {
+  await User.update(
+    { email: req.body.email },
+    {
+      info: req.body.info,
+      user_display_name: req.body.user_display_name,
+      profile_url: req.body.profile_url,
+      user_job: req.body.user_job
+    }
+  );
+
+  const user_info = await User.find({
+    email: req.body.email
+  });
+
+  await Post.updateMany(
+    {
+      email: req.body.email
+    },
+    {
+      profile_url: req.body.profile_url,
+      user_display_name: req.body.user_display_name
+    }
+  );
+
+  return res.status(200).json({
+    userUpdate: true,
+    message: "user info successfully updated",
+    user: user_info[0]
+  });
+};
+
+exports.getUserInfo = async function(req, res, next) {
+  try {
+    const pageUser = await User.find({
+      _id: req.params.id
+    });
+    const postArray = await Post.find({
+      email: pageUser[0].email
+    }).sort({ post_date: "desc" });
+    return res.status(200).json({
+      message: "user info successfully onload",
+      pageUser: pageUser,
+      pageUserPosts: postArray
+    });
+  } catch (e) {
+    return res.status(400).json({
+      message: "user info onload failed"
+    });
+  }
+};
+
+exports.getSearchUser = async function(req, res, next) {
+  var re = new RegExp("^" + req.params.username);
+  const findUser = await User.find({ user_name: { $regex: re } });
+  return res.status(200).json({
+    message: "successfully searched",
+    users: findUser
+  });
+};
+
 exports.followUpdate = async function(req, res, next) {
-  console.log("팔로워 ", req.body.following, req.body.followed);
-  const follower = await user.find({
+  const follower = await User.find({
     _id: req.body.following
   });
-  const followee = await user.find({
+  const followee = await User.find({
     _id: req.body.followed
   });
   var followingState = false;
@@ -28,13 +113,13 @@ exports.followUpdate = async function(req, res, next) {
   } else {
     follower[0].following.push(followee[0]._id);
     followee[0].follower.push(follower[0]._id);
-    const updatedfollower = await user.update(
+    const updatedfollower = await User.update(
       { _id: req.body.following },
       {
         following: follower[0].following
       }
     );
-    const updatedfollowee = await user.update(
+    const updatedfollowee = await User.update(
       { _id: req.body.followed },
       {
         follower: followee[0].follower
@@ -51,7 +136,7 @@ exports.followUpdate = async function(req, res, next) {
 };
 
 exports.create = async function(req, res, next) {
-  const loginUser = await user.find({
+  const loginUser = await User.find({
     email: req.body.email
   });
 
@@ -64,7 +149,7 @@ exports.create = async function(req, res, next) {
       });
     } else {
       const hash = await bcrypt.hash(req.body.password, 10);
-      const user_info = await user.create({
+      const user_info = await User.create({
         email: req.body.email,
         user_name: req.body.user_name,
         password: hash

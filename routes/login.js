@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const user = require("../models/user");
+const User = require("../models/user");
 
 module.exports = function(passport) {
-  router.get("/", function(req, res, next) {
+  router.get("/", function(req, res) {
     res.json({
       success: true,
       message: "user has successfully authenticated",
@@ -22,7 +22,7 @@ module.exports = function(passport) {
 
   router.get("/success", async function(req, res, next) {
     if (req.user) {
-      const user_info = await user.find({
+      const user_info = await User.find({
         email: req.user.email
       });
       res.status(200).json({
