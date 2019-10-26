@@ -56,13 +56,3 @@ exports.assetUploadMedia = async function(req, res, next) {
     assets: assetArray
   });
 };
-
-exports.getSelected = async function(req, res, next) {
-  console.log("업로드디테일", req.params.assetId);
-  const selectAsset = await Asset.find({
-    _id: req.params.assetId
-  });
-  return res.status(200).json({
-    asset: selectAsset
-  });
-};

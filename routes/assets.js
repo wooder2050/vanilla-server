@@ -27,7 +27,6 @@ const upload = multer({
 });
 
 router.get("/", assetsController.getAll);
-router.get("/:assetId", assetsController.getSelected);
 router.post("/upload/photo/db", assetsController.assetUploadPhoto);
 router.post("/upload/media/db", assetsController.assetUploadMedia);
 
