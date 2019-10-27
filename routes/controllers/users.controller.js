@@ -2,33 +2,6 @@ const User = require("../../models/user");
 const Post = require("../../models/post");
 const bcrypt = require("bcrypt");
 
-exports.getFollowingUsers = async function(req, res, next) {
-  if (req.user) {
-    const loginUser = await User.find({
-      email: req.user.email
-    });
-
-    const followingArray = loginUser[0].following;
-    const followedArray = loginUser[0].follower;
-
-    const followingUsers = await Promise.all(
-      followingArray.map(async id => {
-        return await User.findById(id);
-      })
-    );
-    const followedUsers = await Promise.all(
-      followedArray.map(async id => {
-        return await User.findById(id);
-      })
-    );
-    return res.status(200).json({
-      message: "successfully following",
-      followingUsers: followingUsers,
-      followedUsers: followedUsers
-    });
-  }
-};
-
 exports.postUserUpdate = async function(req, res, next) {
   await User.update(
     { email: req.body.email },
@@ -53,7 +26,7 @@ exports.postUserUpdate = async function(req, res, next) {
       user_display_name: req.body.user_display_name
     }
   );
-
+  console.log("postUserUpdate ", user_info[0]);
   return res.status(200).json({
     userUpdate: true,
     message: "user info successfully updated",

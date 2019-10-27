@@ -1,24 +1,5 @@
 const Asset = require("../../models/asset");
 
-exports.getAll = async function(req, res, next) {
-  try {
-    const assetArray = await Asset.find({
-      email: req.user.email
-    }).sort({ created_at: "desc" });
-    return res.status(200).json({
-      postUpdate: true,
-      message: "asset successfully onload",
-      assets: assetArray
-    });
-  } catch (e) {
-    return res.status(400).json({
-      postUpdate: false,
-      message: "asset onload failed",
-      assets: assetArray
-    });
-  }
-};
-
 exports.assetUploadPhoto = async function(req, res, next) {
   await Asset.create({
     email: req.body.email,

@@ -26,7 +26,6 @@ const upload = multer({
   })
 });
 
-router.get("/", assetsController.getAll);
 router.post("/upload/photo/db", assetsController.assetUploadPhoto);
 router.post("/upload/media/db", assetsController.assetUploadMedia);
 
@@ -34,6 +33,7 @@ router.post("/upload/photo/s3", upload.single("imgfile"), async function(
   req,
   res
 ) {
+  console.log("s3 ", req.file);
   if (req.file) {
     res.status(200).json({
       upload: true,
