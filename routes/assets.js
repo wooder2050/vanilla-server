@@ -33,7 +33,6 @@ router.post("/upload/photo/s3", upload.single("imgfile"), async function(
   req,
   res
 ) {
-  console.log("s3 ", req.file);
   if (req.file) {
     res.status(200).json({
       upload: true,

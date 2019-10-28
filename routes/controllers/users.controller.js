@@ -26,7 +26,6 @@ exports.postUserUpdate = async function(req, res, next) {
       user_display_name: req.body.user_display_name
     }
   );
-  console.log("postUserUpdate ", user_info[0]);
   return res.status(200).json({
     userUpdate: true,
     message: "user info successfully updated",
