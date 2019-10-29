@@ -41,10 +41,24 @@ exports.getUserInfo = async function(req, res, next) {
     const postArray = await Post.find({
       email: pageUser[0].email
     }).sort({ post_date: "desc" });
+    const followingArray = pageUser[0].following;
+    const followedArray = pageUser[0].follower;
+    const followingUsers = await Promise.all(
+      followingArray.map(async id => {
+        return await User.find({ _id: id });
+      })
+    );
+    const followedUsers = await Promise.all(
+      followedArray.map(async id => {
+        return await User.find({ _id: id });
+      })
+    );
     return res.status(200).json({
       message: "user info successfully onload",
       pageUser: pageUser,
-      pageUserPosts: postArray
+      pageUserPosts: postArray,
+      userPagefollowingUsers: followingUsers,
+      userPagefollowedUsers: followedUsers,
     });
   } catch (e) {
     return res.status(400).json({
