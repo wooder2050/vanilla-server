@@ -3,7 +3,7 @@ const router = express.Router();
 const usersController = require("./controllers/users.controller");
 
 router.post("/update", usersController.postUserUpdate);
-router.post("/followingUpdate", usersController.followUpdate);
+router.post("/update/following", usersController.followUpdate);
 router.get("/search/:username", usersController.getSearchUser);
 router.get("/:id", usersController.getUserInfo);
 
