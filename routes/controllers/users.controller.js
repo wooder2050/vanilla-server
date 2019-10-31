@@ -58,7 +58,7 @@ exports.getUserInfo = async function(req, res, next) {
       pageUser: pageUser,
       pageUserPosts: postArray,
       userPagefollowingUsers: followingUsers,
-      userPagefollowedUsers: followedUsers,
+      userPagefollowedUsers: followedUsers
     });
   } catch (e) {
     return res.status(400).json({
