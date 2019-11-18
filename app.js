@@ -41,7 +41,8 @@ app.use(
   })
 );
 
-var passport = require("../backend/config/passport")(app);
+const index = require("./routes/index");
+var passport = require("./config/passport")(app);
 const login = require("./routes/login")(passport);
 const logout = require("./routes/logout");
 const register = require("./routes/register");
@@ -50,7 +51,7 @@ const users = require("./routes/users");
 const posts = require("./routes/posts");
 const assets = require("./routes/assets");
 
-
+app.use("/", index);
 app.use("/login", login);
 app.use("/logout", logout);
 app.use("/register", register);
