@@ -1,11 +1,11 @@
-const request = require("supertest");
-const should = require("should");
-const chai = require("chai");
-const expect = require("chai").expect;
-var sinon = require("sinon");
+// const request = require("supertest");
+// const should = require("should");
+// const chai = require("chai");
+// const expect = require("chai").expect;
+// var sinon = require("sinon");
 
-const app = require("../app");
-var httpMocks = require("node-mocks-http");
+// const app = require("../app");
+// var httpMocks = require("node-mocks-http");
 
 // describe("GET / login failed", () => {
 //   it("should send status 401", done => {
