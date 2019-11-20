@@ -17,8 +17,8 @@ module.exports = function(passport) {
   router.post(
     "/",
     passport.authenticate("local", {
-      successRedirect: "http://localhost:3000/mypage",
-      failureRedirect: "http://localhost:3000/login"
+      successRedirect: "https://www.thevanillamusic.info/mypage",
+      failureRedirect: "https://www.thevanillamusic.info/login"
     })
   );
 
@@ -100,8 +100,8 @@ module.exports = function(passport) {
   router.get(
     "/google/callback",
     passport.authenticate("google", {
-      successRedirect: "http://localhost:3000/mypage",
-      failureRedirect: "http://localhost:3000/login"
+      successRedirect: "https://www.thevanillamusic.info/mypage",
+      failureRedirect: "https://www.thevanillamusic.info/login"
     })
   );
 
