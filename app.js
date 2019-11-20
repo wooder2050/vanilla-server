@@ -17,7 +17,7 @@ var app = express();
 connect();
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://www.thevanillamusic.info",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true
   })
