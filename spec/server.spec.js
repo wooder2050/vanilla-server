@@ -1,44 +1,41 @@
-// const request = require("supertest");
-// const should = require("should");
-// const chai = require("chai");
-// const expect = require("chai").expect;
-// var sinon = require("sinon");
+const chaiHttp = require("chai-http");
+const chai = require("chai");
+const app = require("../app");
+require("dotenv").config();
 
-// const app = require("../app");
-// var httpMocks = require("node-mocks-http");
+const dbConnect = require("../models/index");
 
-// describe("GET / login failed", () => {
-//   it("should send status 401", done => {
-//     request(app)
-//       .get("/login/failed")
-//       .expect(401)
-//       .end((err, res) => {
-//         expect(res.body.message).to.equal("user failed to authenticate.");
-//         done();
-//       });
-//   });
-// });
+chai.use(chaiHttp);
+const expect = chai.expect;
 
-// describe("GET / logout", () => {
-//   it("should send status 200 and {authenticated: false}", done => {
-//     request(app)
-//       .get("/logout")
-//       .expect(200)
-//       .end((err, res) => {
-//         expect(res.body.authenticated).to.equal(false);
-//         done();
-//       });
-//   });
-// });
-//비동기, req mock 작업
-// describe("POST / posts/upload", () => {
-//   it("should send status 200 and { userPost: true}", done => {
-//     request(app)
-//       .post("/posts/upload")
-//       .expect(200)
-//       .end((err, res) => {
-//         expect(res.body.userPost).to.equal(true);
-//         done();
-//       });
-//   });
-// });
+describe("Test with mongoDB database", function() {
+  dbConnect();
+
+  describe("POST /register", function() {
+    it("should check user info", function(done) {
+      this.timeout(10000);
+      chai
+        .request(app)
+        .post("/register")
+        .send({
+          email: "wooder2050@gmail.com",
+          password: "123456",
+          password2: "123456"
+        })
+        .end(function(err, res) {
+          if (err) return done(err);
+          expect(err).to.be.not.ok;
+          expect(res.status).to.equal(401);
+          expect(typeof res.body).to.equal("object");
+          expect(res.body.register_authenticated).to.equal(false);
+          expect(res.body.register_message).to.equal(
+            "Same email already exists"
+          );
+          expect(res.body.register_emailError).to.equal(
+            "Same email already exists"
+          );
+          done();
+        });
+    });
+  });
+});

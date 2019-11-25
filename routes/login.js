@@ -23,7 +23,6 @@ module.exports = function(passport) {
   );
 
   router.get("/success", async function(req, res, next) {
-    console.log("성공");
     if (req.user) {
       const userInfo = await User.find({
         email: req.user.email
