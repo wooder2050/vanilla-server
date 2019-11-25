@@ -1,12 +1,12 @@
-const chaiHttp = require("chai-http");
-const chai = require("chai");
-const app = require("../app");
-require("dotenv").config();
+// const chaiHttp = require("chai-http");
+// const chai = require("chai");
+// const app = require("../app");
+// require("dotenv").config();
 
-const dbConnect = require("../models/index");
+// const dbConnect = require("../models/index");
 
-chai.use(chaiHttp);
-const expect = chai.expect;
+// chai.use(chaiHttp);
+// const expect = chai.expect;
 
 // describe("Test with mongoDB database", function() {
 //   dbConnect();
