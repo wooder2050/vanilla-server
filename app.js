@@ -35,9 +35,9 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    store: new FileStore()
+    resave: true,
+    saveUninitialized: false,
+    // store: new FileStore()
   })
 );
 
