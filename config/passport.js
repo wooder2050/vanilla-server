@@ -24,7 +24,8 @@ module.exports = function(app) {
     new LocalStrategy(
       {
         emailField: "email",
-        passwordField: "password"
+        passwordField: "password",
+        session: true
       },
       async function(email, password, done) {
         const loginUser = await User.findOne({
